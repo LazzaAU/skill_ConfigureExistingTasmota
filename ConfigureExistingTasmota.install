@@ -1,0 +1,22 @@
+{
+    "name": "ConfigureExistingTasmota",
+    "version": "0.0.1",
+    "icon": "fab fa-battle-net",
+    "category": "undefined",
+    "author": "LazzaAU",
+    "maintainers": [],
+    "desc": "Configure a existing tasmota device to be alice compatible",
+    "aliceMinVersion": "1.0.0-b1",
+    "systemRequirements": [
+        ""
+    ],
+    "pipRequirements": [
+        ""
+    ],
+    "conditions": {
+        "lang": [
+            "en"
+        ],
+        "asrArbitraryCapture": true
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "skill": "ConfigureExistingTasmota",
+    "icon": "time",
+    "description": "Configure a existing tasmota device to be alice compatible",
+    "slotTypes": [],
+    "intents": []
+}
