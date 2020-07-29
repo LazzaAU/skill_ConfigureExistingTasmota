@@ -4,11 +4,14 @@ from core.util.Decorators import IntentHandler
 
 from .CETbacklog import CETConfigs
 
+
 class ConfigureExistingTasmota(AliceSkill):
 	"""
 	Author: LazzaAU
 	Description: Configure a existing tasmota device to be alice compatible
 	"""
+
+
 	def __init__(self):
 		super().__init__()
 		self._uid = ''
@@ -17,6 +20,8 @@ class ConfigureExistingTasmota(AliceSkill):
 		self._deviceType = ''
 		self._deviceClass: str = ''
 		self._theSiteID = self.getAliceConfig('deviceName')
+		self._counter = 0
+
 
 	@IntentHandler('ConfigureTazDevice')
 	def configureMyTasmota(self, session: DialogSession, **_kwargs):
@@ -29,13 +34,21 @@ class ConfigureExistingTasmota(AliceSkill):
 				siteId=session.siteId
 			)
 			return
+
 		isitatemp: bool = self.getConfig("isItAtemperatureSensor")
 		isitaswitch: bool = self.getConfig("isItASwitch")
+		isitalightsensor: bool = self.getConfig("isItALightSensor")
+		tempList = [isitatemp, isitaswitch, isitalightsensor]
 
-		if isitatemp == True and isitaswitch == True:
+		self._counter = 0
+		for result in tempList:
+			if result:
+				self._counter += 1
+
+		if self._counter > 1:
 			self.endDialog(
 				sessionId=session.sessionId,
-				text='You have both sensor and switch enabled, please choose one or the other and re ask me',
+				text='Please choose only one device type then re ask me to configure it',
 				siteId=session.siteId
 			)
 			return
@@ -43,16 +56,20 @@ class ConfigureExistingTasmota(AliceSkill):
 		if self.getConfig('isItASwitch'):
 			self._deviceClass = 'EspSwitch'
 		if self.getConfig('isItAtemperatureSensor') and self.checkCETSensorBrand():
-				self._deviceClass = 'EspEnvSensor'
-				self._deviceBrand = self.getConfig('sensorBrand')
+			self._deviceClass = 'EspEnvSensor'
+			self._deviceBrand = self.getConfig('sensorBrand')
 		elif self.getConfig('isItAtemperatureSensor') and not self.checkCETSensorBrand():
 			self.endDialog(
 				sessionId=session.sessionId,
 				text='Please set a supported temperature sensor as shown in your logs',
 				siteId=session.siteId
 			)
-			self.logInfo(f' Supported sensors are \'BME280\', \'DHT11\', \'DHT22\', \'AM2302\', \'AM2301\'')
+			self.logInfo(f' Supported sensors are \'BME680\', \'BME280\', \'DHT11\', \'DHT22\', \'AM2302\', \'AM2301\'')
 			return
+
+		if self.getConfig('isItALightSensor'):
+
+			self._deviceClass = 'EspLightSensor'
 		self.processBacklogInputs(session)
 
 
@@ -67,13 +84,15 @@ class ConfigureExistingTasmota(AliceSkill):
 		self._deviceType = self.DeviceManager.getDeviceTypeByName(name=self._deviceClass)
 		self._location = self.LocationManager.getLocation(location=self._location)
 		self.DeviceManager.addNewDevice(deviceTypeId=self._deviceType.id, locationId=self._location.id, uid=self._uid)
+
 		cetConfigs = CETConfigs(deviceType=self._deviceClass, uid=self._uid)
 		confs = cetConfigs.getCETBacklogConfigs(self._location, self._deviceBrand)
 
 		if confs:
 			print(f'{confs}')
 
+
 	def checkCETSensorBrand(self) -> bool:
-		supportedSensors = ('BME280', 'DHT11', 'DHT22', 'AM2302', 'AM2301')
+		supportedSensors = ('BME680', 'BME280', 'DHT11', 'DHT22', 'AM2302', 'AM2301')
 		if self.getConfig('sensorBrand') in supportedSensors:
 			return True

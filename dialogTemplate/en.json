@@ -56,53 +56,6 @@
         			"missingQuestion": ""
         		}
         	]
-        },
-        {
-        	"name": "DeviceClass",
-        	"description": "Find out the class of the device",
-        	"enabledByDefault": false,
-        	"utterances": [
-        		"a {switch:=>deviceClass}",
-                "It's a {sensor:=>deviceClass}",
-                "a {temperature sensor:=>deviceClass}",
-                "{light switch:=>deviceClass}",
-                "it's a {light switch:=>deviceClass}"
-        	],
-        	"slots": [
-        		{
-        			"name": "deviceClass",
-        			"description": null,
-        			"required": false,
-        			"type": "deviceClass",
-        			"missingQuestion": ""
-        		}
-        	]
-        },
-		{
-			"name": "GetLocation",
-			"description": "User answers with a location name",
-			"enabledByDefault": false,
-			"utterances": [
-				"in {kitchen:=>Location}",
-				"in the {living room:=>Location}",
-				"{entrance:=>Location}",
-				"{office:=>Location}",
-				"{basement:=>Location}",
-				"{attic:=>Location}",
-				"{bathroom:=>Location}",
-				"{bedroom:=>Location}",
-				"{living room:=>Location}",
-				"{kitchen:=>Location}"
-			],
-			"slots": [
-				{
-					"name": "Location",
-					"description": null,
-					"required": true,
-					"type": "Alice/Location",
-					"missingQuestion": "what room"
-				}
-			]
-		}
-	]
+        }
+    ]
 }

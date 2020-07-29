@@ -9,19 +9,25 @@
 		"defaultValue": "false",
 		"dataType": "boolean",
 		"isSensitive": false,
-		"description": "Allows adding config strings"
+		"description": "Allows adding temp sensors"
 	},
 	"isItASwitch": {
 		"defaultValue": "false",
 		"dataType": "boolean",
 		"isSensitive": false,
-		"description": "Allows adding config strings"
+		"description": "Allows adding switches"
+	},
+	"isItALightSensor": {
+		"defaultValue": "false",
+		"dataType": "boolean",
+		"isSensitive": false,
+		"description": "Allows adding light sensors"
 	},
 	"locationOfDevice": {
 		"defaultValue": "",
 		"dataType": "string",
 		"isSensitive": false,
-		"description": "Allows adding config strings"
+		"description": "Adss a location for device"
 	}
 	
 }

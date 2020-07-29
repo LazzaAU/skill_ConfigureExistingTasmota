@@ -2,123 +2,19 @@ from core.base.model.ProjectAliceObject import ProjectAliceObject
 
 
 class CETConfigs(ProjectAliceObject):
-	BACKLOG_CONFIGS = [
-		{
-			'cmds'     : [
-				'ssid1 {ssid}',
-				'password1 {wifipass}'
-			],
-		},
-		{
-			'cmds'     : [
-				'MqttHost {mqtthost}',
-				'MqttClient {type}_{location}',
-				'TelePeriod 0'
-			],
-		},
-		{
-			'cmds'     : [
-				'friendlyname {type} - {location}',
-				'DeviceName {location} {type}'
-			],
-		},
-		{
-			'cmds'     : [
-				'switchmode 2',
-				'switchtopic 0'
-			],
-		},
-		{
-			'cmds'     : [
-				'topic {identifier}',
-				'grouptopic all',
-				'fulltopic projectalice/devices/tasmota/%prefix%/%topic%/',
-				'prefix1 cmd',
-				'prefix2 feedback',
-				'prefix3 feedback'
-			],
-		},
-		{
-			'cmds'     : [
-				'rule1 on System#Boot do publish projectalice/devices/tasmota/feedback/hello/{identifier} {{"siteId":"{location}","deviceType":"{type}","uid":"{identifier}"}} endon',
-				'rule1 1',
-				'rule2 on switch1#state do publish projectalice/devices/tasmota/feedback/{identifier} {{"siteId":"{location}","deviceType":"{type}","feedback":%value%,"uid":"{identifier}"}} endon',
-				'rule2 1',
-				'restart 1'
-			],
-		}
-	]
-
-	BACKLOG_SENSORCONFIGS = [
-		{
-			'cmds'     : [
-				'ssid1 {ssid}',
-				'password1 {wifipass}'
-			],
-		},
-		{
-			'cmds'     : [
-				'MqttHost {mqtthost}',
-				'MqttClient {type}_{location}',
-				'TelePeriod 300'
-			],
-		},
-		{
-			'cmds'     : [
-				'friendlyname {type} - {location}',
-				'DeviceName {location} {type}'
-			],
-		},
-		{
-			'cmds'     : [
-				'switchmode 0',
-				'switchtopic 0'
-			],
-		},
-		{
-			'cmds'     : [
-				'topic {identifier}',
-				'grouptopic all',
-				'fulltopic projectalice/devices/tasmota/%prefix%/%topic%/',
-				'prefix1 cmd',
-				'prefix2 feedback',
-				'prefix3 feedback'
-			],
-		},
-		{
-			'cmds'     : [
-				'rule1 on System#Boot do publish projectalice/devices/tasmota/feedback/hello/{identifier} {{"siteId":"{location}","deviceType":"{type}","uid":"{identifier}"}} endon',
-				'rule1 1',
-			],
-		},
-		{
-			'cmds'     : [
-				'{rule2}',
-				'rule2 1',
-				'restart 1'
-			],
-		}
-	]
-
-	BASE_TOPIC = 'projectalice/devices/tasmota/cmd/{identifier}'
-
 
 	def __init__(self, deviceType: str, uid: str):
 		super().__init__()
-		self._name = 'TasmotaConfigs'
-		self._brand = 'DHT11'
-		self._gpioUsed = 0
+		self._brand = ''
 		self._deviceType = deviceType
 		self._uid = uid
 		self._rule2 = ''
 		self._location = ''
-		self._tasSensorNumber = 0
-		self._tasSensorNumber2 = 0
-		self._gpioPin = dict()
 		self.backlogSwitchConfigs = ''
 		self._sensorValue = ''
 		self._rule2Temp = ''
 		self._rule2Switch = ''
+		self._rule2LDR = ''
 
 	@property
 	def deviceType(self) -> str:
@@ -129,25 +25,34 @@ class CETConfigs(ProjectAliceObject):
 	def uid(self) -> str:
 		return self._uid
 
-
-	def backlogSwitchconfig(self):
-		self.backlogSwitchConfigs = f'backlog MqttHost {self.Commons.getLocalIp()}; MqttClient {self._deviceType} - {self._location}; TelePeriod 0; friendlyname {self._deviceType} - {self._location}; switchmode 2; switchtopic 0; topic {self._uid}; grouptopic all; fulltopic projectalice/devices/tasmota/%prefix%/%topic%/; prefix1 cmd; prefix2 feedback; prefix3 feedback; rule1 on System#Boot do publish projectalice/devices/tasmota/feedback/hello/{self._uid} {{"siteId":"{self._location}","deviceType":"{self._deviceType}","uid":"{self._uid}"}} endon; rule1 1; {self._rule2Switch}'
+	@staticmethod
+	def printResult(configs):
 		print(f'Paste this following line into your Tasmota device\'s console ==>')
 		print('')
-		print(f'{self.backlogSwitchConfigs}')
+		print(f'{configs}')
+
+	##### Set the rule2 options  ###
+	def backlogSwitchconfig(self):
+		self.backlogSwitchConfigs = f'backlog MqttHost {self.Commons.getLocalIp()}; MqttClient {self._deviceType} - {self._location}; TelePeriod 0; friendlyname {self._deviceType} - {self._location}; switchmode 2; switchtopic 0; topic {self._uid}; grouptopic all; fulltopic projectalice/devices/tasmota/%prefix%/%topic%/; prefix1 cmd; prefix2 feedback; prefix3 feedback; rule1 on System#Boot do publish projectalice/devices/tasmota/feedback/hello/{self._uid} {{"siteId":"{self._location}","deviceType":"{self._deviceType}","uid":"{self._uid}"}} endon; rule1 1; {self._rule2Switch}'
+		self.printResult(configs=self.backlogSwitchConfigs)
 
 	def backlogTempconfig(self):
 		backlogTempConfigs = f'backlog MqttHost {self.Commons.getLocalIp()}; MqttClient {self._deviceType} - {self._location}; TelePeriod 60; friendlyname {self._deviceType} - {self._location}; switchmode 0; switchtopic 0; topic {self._uid}; grouptopic all; fulltopic projectalice/devices/tasmota/%prefix%/%topic%/; prefix1 cmd; prefix2 feedback; prefix3 feedback; rule1 on System#Boot do publish projectalice/devices/tasmota/feedback/hello/{self._uid} {{"siteId":"{self._location}","deviceType":"{self._deviceType}","uid":"{self._uid}"}} endon; rule1 1; {self._rule2Temp}'
-		print(f'Paste this following line into your Tasmota device\'s console ==>')
-		print('')
-		print(f'{backlogTempConfigs}')
+		self.printResult(configs=backlogTempConfigs)
+
+	def backlogLDRconfig(self):
+		backlogLDRConfigs = f'backlog MqttHost {self.Commons.getLocalIp()}; MqttClient {self._deviceType} - {self._location}; TelePeriod 60; friendlyname {self._deviceType} - {self._location}; switchmode 0; switchtopic 0; topic {self._uid}; grouptopic all; fulltopic projectalice/devices/tasmota/%prefix%/%topic%/; prefix1 cmd; prefix2 feedback; prefix3 feedback; rule1 on System#Boot do publish projectalice/devices/tasmota/feedback/hello/{self._uid} {{"siteId":"{self._location}","deviceType":"{self._deviceType}","uid":"{self._uid}"}} endon; rule1 1; {self._rule2LDR}'
+		self.printResult(configs=backlogLDRConfigs)
+
 
 	def getCETBacklogConfigs(self, location: str, brand: str) :
 		if not brand:
 			self._brand = 'generic'
 		else:
 			self._brand = brand
-		self._location = location.name #NO SONAR
+
+		self._location = location.name #ignore error, it works
+
 		if 'BME280' in self._brand:
 			self._sensorValue = 'Pressure'
 		else:
@@ -162,8 +67,11 @@ class CETConfigs(ProjectAliceObject):
 			self._rule2Switch = f'rule2 on switch1#state do publish projectalice/devices/tasmota/feedback/{self._uid} {{"siteId":"{self._location}","deviceType":"{self._deviceType}","feedback":%value%,"uid":"{self._uid}"}} endon'
 			self.backlogSwitchconfig()
 
+		elif 'EspLightSensor' in self._deviceType:
+			self._rule2LDR = f'rule2 on tele-ANALOG#Illuminance do var1 %value% endon on tele-ANALOG#Illuminance do event sendAlicePayload endon on event#sendAlicePayload do publish projectalice/devices/tasmota/feedback/{self._uid}/sensor {{"sensorType":"ANALOG","siteId":"{self._location}","deviceType":"{self._deviceType}","Illuminance":"%Var1%","uid":"{self._uid}"}} endon : rule2 1'
+			self.backlogLDRconfig()
 
 	def checkCETSensorBrand(self) -> bool:
-		supportedSensors = ('BME280', 'DHT11', 'DHT22', 'AM2302', 'AM2301')
+		supportedSensors = ('BME680', 'BME280', 'DHT11', 'DHT22', 'AM2302', 'AM2301')
 		if self._brand in supportedSensors:
 			return True
