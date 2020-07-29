@@ -37,11 +37,11 @@ class CETConfigs(ProjectAliceObject):
 		self.printResult(configs=self.backlogSwitchConfigs)
 
 	def backlogTempconfig(self):
-		backlogTempConfigs = f'backlog MqttHost {self.Commons.getLocalIp()}; MqttClient {self._deviceType} - {self._location}; TelePeriod 60; friendlyname {self._deviceType} - {self._location}; switchmode 0; switchtopic 0; topic {self._uid}; grouptopic all; fulltopic projectalice/devices/tasmota/%prefix%/%topic%/; prefix1 cmd; prefix2 feedback; prefix3 feedback; rule1 on System#Boot do publish projectalice/devices/tasmota/feedback/hello/{self._uid} {{"siteId":"{self._location}","deviceType":"{self._deviceType}","uid":"{self._uid}"}} endon; rule1 1; {self._rule2Temp}'
+		backlogTempConfigs = f'backlog MqttHost {self.Commons.getLocalIp()}; MqttClient {self._deviceType} - {self._location}; TelePeriod 300; friendlyname {self._deviceType} - {self._location}; switchmode 0; switchtopic 0; topic {self._uid}; grouptopic all; fulltopic projectalice/devices/tasmota/%prefix%/%topic%/; prefix1 cmd; prefix2 feedback; prefix3 feedback; rule1 on System#Boot do publish projectalice/devices/tasmota/feedback/hello/{self._uid} {{"siteId":"{self._location}","deviceType":"{self._deviceType}","uid":"{self._uid}"}} endon; rule1 1; {self._rule2Temp}'
 		self.printResult(configs=backlogTempConfigs)
 
 	def backlogLDRconfig(self):
-		backlogLDRConfigs = f'backlog MqttHost {self.Commons.getLocalIp()}; MqttClient {self._deviceType} - {self._location}; TelePeriod 60; friendlyname {self._deviceType} - {self._location}; switchmode 0; switchtopic 0; topic {self._uid}; grouptopic all; fulltopic projectalice/devices/tasmota/%prefix%/%topic%/; prefix1 cmd; prefix2 feedback; prefix3 feedback; rule1 on System#Boot do publish projectalice/devices/tasmota/feedback/hello/{self._uid} {{"siteId":"{self._location}","deviceType":"{self._deviceType}","uid":"{self._uid}"}} endon; rule1 1; {self._rule2LDR}'
+		backlogLDRConfigs = f'backlog MqttHost {self.Commons.getLocalIp()}; MqttClient {self._deviceType} - {self._location}; TelePeriod 300; friendlyname {self._deviceType} - {self._location}; switchmode 0; switchtopic 0; topic {self._uid}; grouptopic all; fulltopic projectalice/devices/tasmota/%prefix%/%topic%/; prefix1 cmd; prefix2 feedback; prefix3 feedback; rule1 on System#Boot do publish projectalice/devices/tasmota/feedback/hello/{self._uid} {{"siteId":"{self._location}","deviceType":"{self._deviceType}","uid":"{self._uid}"}} endon; rule1 1; {self._rule2LDR}'
 		self.printResult(configs=backlogLDRConfigs)
 
 
