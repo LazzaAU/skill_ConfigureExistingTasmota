@@ -2,6 +2,107 @@
     "skill": "ConfigureExistingTasmota",
     "icon": "time",
     "description": "Configure a existing tasmota device to be alice compatible",
-    "slotTypes": [],
-    "intents": []
+    "slotTypes": [
+         {
+			"name": "deviceClass",
+			"matchingStrictness": null,
+			"automaticallyExtensible": true,
+			"useSynonyms": true,
+			"values": [
+			  	{
+					"value": "switch",
+					"synonyms": [
+						"sensor",
+					    "temperature sensor",
+					  	"light sensor",
+					  	"light switch",
+					  	"motion sensor"
+					]
+				}
+			]
+		},
+        {
+            "name": "ConfigureTasmota",
+            "matchingStrictness": null,
+            "automaticallyExtensible": true,
+            "useSynonyms": true,
+            "values": [
+                {
+                    "value": "configure",
+                    "synonyms": [
+                        "work",
+                        "tasmota"
+                    ]
+                }
+            ]
+        }
+        ],
+    "intents": [
+        {
+        	"name": "ConfigureTazDevice",
+        	"description": "User wants to configure a pre existing tasmota device",
+        	"enabledByDefault": true,
+        	"utterances": [
+        		"{Configure:=>ConfigureTasmota} a old {tasmota:=>ConfigureTasmota} device",
+                "make my {tasmota:=>ConfigureTasmota} device {work:=>ConfigureTasmota} with alice",
+				"{Configure:=>ConfigureTasmota} {tasmota:=>ConfigureTasmota}"
+        	],
+        	"slots": [
+        		{
+        			"name": "ConfigureTasmota",
+        			"description": null,
+        			"required": false,
+        			"type": "ConfigureTasmota",
+        			"missingQuestion": ""
+        		}
+        	]
+        },
+        {
+        	"name": "DeviceClass",
+        	"description": "Find out the class of the device",
+        	"enabledByDefault": false,
+        	"utterances": [
+        		"a {switch:=>deviceClass}",
+                "It's a {sensor:=>deviceClass}",
+                "a {temperature sensor:=>deviceClass}",
+                "{light switch:=>deviceClass}",
+                "it's a {light switch:=>deviceClass}"
+        	],
+        	"slots": [
+        		{
+        			"name": "deviceClass",
+        			"description": null,
+        			"required": false,
+        			"type": "deviceClass",
+        			"missingQuestion": ""
+        		}
+        	]
+        },
+		{
+			"name": "GetLocation",
+			"description": "User answers with a location name",
+			"enabledByDefault": false,
+			"utterances": [
+				"in {kitchen:=>Location}",
+				"in the {living room:=>Location}",
+				"{entrance:=>Location}",
+				"{office:=>Location}",
+				"{basement:=>Location}",
+				"{attic:=>Location}",
+				"{bathroom:=>Location}",
+				"{bedroom:=>Location}",
+				"{living room:=>Location}",
+				"{kitchen:=>Location}"
+			],
+			"slots": [
+				{
+					"name": "Location",
+					"description": null,
+					"required": true,
+					"type": "Alice/Location",
+					"missingQuestion": "what room"
+				}
+			]
+		}
+	]
 }

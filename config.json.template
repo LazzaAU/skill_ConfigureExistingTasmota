@@ -1,0 +1,27 @@
+{
+	"sensorBrand": {
+		"defaultValue": "",
+		"dataType": "string",
+		"isSensitive": false,
+		"description": "supported values are 'BME280', 'DHT11', 'DHT22', 'AM2302', 'AM2301'"
+	},
+	"isItAtemperatureSensor": {
+		"defaultValue": "false",
+		"dataType": "boolean",
+		"isSensitive": false,
+		"description": "Allows adding config strings"
+	},
+	"isItASwitch": {
+		"defaultValue": "false",
+		"dataType": "boolean",
+		"isSensitive": false,
+		"description": "Allows adding config strings"
+	},
+	"locationOfDevice": {
+		"defaultValue": "",
+		"dataType": "string",
+		"isSensitive": false,
+		"description": "Allows adding config strings"
+	}
+	
+}
