@@ -1,9 +1,9 @@
 {
-	"sensorBrand": {
-		"defaultValue": "",
-		"dataType": "string",
+	"telePeriod": {
+		"defaultValue": "300",
+		"dataType": "int",
 		"isSensitive": false,
-		"description": "supported values are 'BME280', 'DHT11', 'DHT22', 'AM2302', 'AM2301'"
+		"description": "Allows setting period that tasmota sends tele messages"
 	},
 	"isItAtemperatureSensor": {
 		"defaultValue": "false",
@@ -29,5 +29,4 @@
 		"isSensitive": false,
 		"description": "Adss a location for device"
 	}
-	
 }

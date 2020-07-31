@@ -16,7 +16,7 @@ class ConfigureExistingTasmota(AliceSkill):
 		super().__init__()
 		self._uid = ''
 		self._location: str = ''
-		self._deviceBrand: str = self.getConfig('sensorBrand')
+		self._telePeriod: str = self.getConfig('telePeriod')
 		self._deviceType = ''
 		self._deviceClass: str = ''
 		self._theSiteID = self.getAliceConfig('deviceName')
@@ -55,17 +55,8 @@ class ConfigureExistingTasmota(AliceSkill):
 
 		if self.getConfig('isItASwitch'):
 			self._deviceClass = 'EspSwitch'
-		if self.getConfig('isItAtemperatureSensor') and self.checkCETSensorBrand():
+		if self.getConfig('isItAtemperatureSensor') :
 			self._deviceClass = 'EspEnvSensor'
-			self._deviceBrand = self.getConfig('sensorBrand')
-		elif self.getConfig('isItAtemperatureSensor') and not self.checkCETSensorBrand():
-			self.endDialog(
-				sessionId=session.sessionId,
-				text='Please set a supported temperature sensor as shown in your logs',
-				siteId=session.siteId
-			)
-			self.logInfo(f' Supported sensors are \'BME680\', \'BME280\', \'DHT11\', \'DHT22\', \'AM2302\', \'AM2301\'')
-			return
 
 		if self.getConfig('isItALightSensor'):
 
@@ -86,13 +77,7 @@ class ConfigureExistingTasmota(AliceSkill):
 		self.DeviceManager.addNewDevice(deviceTypeId=self._deviceType.id, locationId=self._location.id, uid=self._uid)
 
 		cetConfigs = CETConfigs(deviceType=self._deviceClass, uid=self._uid)
-		confs = cetConfigs.getCETBacklogConfigs(self._location, self._deviceBrand)
+		confs = cetConfigs.getCETBacklogConfigs(self._location, self._telePeriod)
 
 		if confs:
 			print(f'{confs}')
-
-
-	def checkCETSensorBrand(self) -> bool:
-		supportedSensors = ('BME680', 'BME280', 'DHT11', 'DHT22', 'AM2302', 'AM2301')
-		if self.getConfig('sensorBrand') in supportedSensors:
-			return True
