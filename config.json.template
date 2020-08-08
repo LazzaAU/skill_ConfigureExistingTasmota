@@ -6,7 +6,7 @@
 		"description": "Allows setting period that tasmota sends tele messages"
 	},
 	"isItAtemperatureSensor": {
-		"defaultValue": "false",
+		"defaultValue": "true",
 		"dataType": "boolean",
 		"isSensitive": false,
 		"description": "Allows adding temp sensors"
@@ -28,5 +28,11 @@
 		"dataType": "string",
 		"isSensitive": false,
 		"description": "Adss a location for device"
+	},
+	"FriendlyName": {
+		"defaultValue": "",
+		"dataType": "string",
+		"isSensitive": false,
+		"description": "Adss a friendly name for device"
 	}
 }
